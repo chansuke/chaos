@@ -1,0 +1,10 @@
+[package]
+name = "chaos"
+version = "0.1.0"
+authors = ["chansuke <chansuke@georepublic.de>"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
