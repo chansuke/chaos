@@ -8,3 +8,9 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
+
+[dependencies]
+bootloader_precompiled = "0.2.0"
+
+[package.metadata.bootimage]
+default-target = "x86_64-blog_os.json"
