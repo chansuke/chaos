@@ -13,4 +13,4 @@ panic = "abort"
 bootloader_precompiled = "0.2.0"
 
 [package.metadata.bootimage]
-default-target = "x86_64-blog_os.json"
+default-target = "x86_64-chaos.json"

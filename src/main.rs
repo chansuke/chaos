@@ -1,6 +1,7 @@
 #![feature(panic_implementation)]
 #![no_std]
 #![no_main]
+mod vga_buffer;
 
 extern crate bootloader_precompiled;
 
