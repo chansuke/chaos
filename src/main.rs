@@ -1,30 +1,28 @@
 #![feature(panic_implementation)]
 #![no_std]
 #![no_main]
-mod vga_buffer;
+#[macro_use]
+extern crate lazy_static;
+extern crate spin;
 
 extern crate bootloader_precompiled;
+extern crate volatile;
 
 use core::panic::PanicInfo;
 
-#[panic_implementation]
-#[no_mangle]
-pub fn panic(_info: &PanicInfo) -> ! {
+#[macro_use]
+mod vga_buffer;
+
+#[no_mangle] // don't mangle the name of this function
+pub extern "C" fn _start() {
+    println!("Hello World{}", "!");
+
     loop {}
 }
 
-static HELLO: &[u8] = b"Hello World!";
-
+#[panic_implementation]
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
-    let vga_buffer = 0xb8000 as *mut u8;
-
-    for (i, &byte) in HELLO.iter().enumerate() {
-        unsafe {
-            *vga_buffer.offset(i as isize * 2) = byte;
-            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-        }
-    }
-
+pub fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
     loop {}
 }
