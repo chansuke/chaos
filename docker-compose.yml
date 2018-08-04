@@ -1,0 +1,6 @@
+version: '3'
+services:
+  deko_os:
+    build: .
+    volumes:
+      - ./:/tmp/
