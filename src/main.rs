@@ -1,25 +1,30 @@
 #![feature(panic_implementation)]
 #![no_std]
-#![no_main]
+#![cfg_attr(not(test), no_main)]
 #[macro_use]
+#[cfg(test)]
 extern crate lazy_static;
 extern crate spin;
+extern crate std;
 
 extern crate bootloader_precompiled;
 extern crate volatile;
 
+#[cfg_attr(test, allow(unused_imports))]
 use core::panic::PanicInfo;
 
 #[macro_use]
 mod vga_buffer;
 
-#[no_mangle] // don't mangle the name of this function
-pub extern "C" fn _start() {
+#[cfg(not(test))]
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
     loop {}
 }
 
+#[cfg(not(test))]
 #[panic_implementation]
 #[no_mangle]
 pub fn panic(info: &PanicInfo) -> ! {

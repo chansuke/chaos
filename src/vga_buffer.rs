@@ -106,7 +106,6 @@ impl Writer {
 }
 
 use core::fmt;
-
 impl fmt::Write for Writer {
   fn write_str(&mut self, s: &str) -> fmt::Result {
     self.write_string(s);
@@ -115,7 +114,6 @@ impl fmt::Write for Writer {
 }
 
 use spin::Mutex;
-
 lazy_static! {
   pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
     column_position: 0,
