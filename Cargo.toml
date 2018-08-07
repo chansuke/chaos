@@ -23,3 +23,6 @@ features = ["spin_no_std"]
 [dependencies.spin]
 spin = "0.4.8"
 default-features = false
+
+[dev-dependencies]
+array-init = "0.0.3"
