@@ -4,6 +4,8 @@
 #[macro_use]
 #[cfg(test)]
 extern crate lazy_static;
+#[cfg(test)]
+extern crate array_init;
 extern crate spin;
 extern crate std;
 
