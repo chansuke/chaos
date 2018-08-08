@@ -12,16 +12,22 @@ extern crate std;
 extern crate bootloader_precompiled;
 extern crate volatile;
 
+extern crate uart_16550;
+
 #[cfg_attr(test, allow(unused_imports))]
 use core::panic::PanicInfo;
 
 #[macro_use]
 mod vga_buffer;
 
+#[macro_use]
+mod serial;
+
 #[cfg(not(test))]
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
+    serial_println!("Hello Host{}", "!");
 
     loop {}
 }
