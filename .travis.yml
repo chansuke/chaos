@@ -3,7 +3,7 @@ sudo: required
 language: rust
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.16.1
+  - DOCKER_COMPOSE_VERSION=1.22.0
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -14,8 +14,12 @@ before_install:
 services:
   - docker
 
-script:
+before_script:
   - docker-compose build
+  - docker-compose run chaos bash -c "cd /tmp; rustup component add rust-src"
+  - docker-compose run chaos bash -c "cd /tmp; bootimage build"
+
+script:
   - docker-compose run chaos bash -c "cd /tmp; bootimage build"
   - docker-compose run chaos bash -c "cd /tmp; cargo test"
   - docker-compose run chaos bash -c "cd /tmp; bootimage test"
