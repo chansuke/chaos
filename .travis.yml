@@ -14,6 +14,10 @@ before_install:
 services:
   - docker
 
+before_script:
+  - docker-compose run deko_os bash -c "cd /tmp; bootimage build"
+
 script:
-  - cargo test
+  - docker-compose run deko_os bash -c "cd /tmp; cargo test"
+  - docker-compose run deko_os bash -c "cd /tmp; bootimage test"
 

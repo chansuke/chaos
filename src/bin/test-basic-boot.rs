@@ -6,20 +6,30 @@
 #[macro_use]
 extern crate chaos;
 
+use chaos::exit_qemu;
 use core::panic::PanicInfo;
 
 #[cfg(not(test))]
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Hello World{}", "!");
+  serial_println!("ok");
 
-    loop {}
+  unsafe {
+    exit_qemu();
+  }
+  loop {}
 }
 
 #[cfg(not(test))]
 #[panic_implementation]
 #[no_mangle]
 pub fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    loop {}
+  serial_println!("failed");
+
+  serial_println!("{}", info);
+
+  unsafe {
+    exit_qemu();
+  }
+  loop {}
 }

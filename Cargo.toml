@@ -28,3 +28,6 @@ default-features = false
 
 [dev-dependencies]
 array-init = "0.0.3"
+
+[features]
+integration-test = []

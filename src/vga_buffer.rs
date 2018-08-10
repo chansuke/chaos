@@ -52,21 +52,6 @@ pub struct Writer {
   buffer: &'static mut Buffer,
 }
 
-fn construct_buffer() -> Buffer {
-  use array_init::array_init;
-
-  Buffer {
-    chars: array_init(|_| array_init(|_| Volatile::new(empty_char()))),
-  }
-}
-
-fn empty_char() -> ScreenChar {
-  ScreenChar {
-    ascii_character: b' ',
-    color_code: ColorCode::new(Color::Green, Color::Brown),
-  }
-}
-
 impl Writer {
   pub fn write_byte(&mut self, byte: u8) {
     match byte {
@@ -137,10 +122,12 @@ lazy_static! {
   });
 }
 
+#[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::vga_buffer::print(format_args!($($arg)*)));
 }
 
+#[macro_export]
 macro_rules! println {
     () => (print!("\n"));
     ($fmt:expr) => (print!(concat!($fmt, "\n")));
@@ -164,6 +151,21 @@ mod test {
       column_position: 0,
       color_code: ColorCode::new(Color::Blue, Color::Magenta),
       buffer: Box::leak(Box::new(buffer)),
+    }
+  }
+
+  fn construct_buffer() -> Buffer {
+    use array_init::array_init;
+
+    Buffer {
+      chars: array_init(|_| array_init(|_| Volatile::new(empty_char()))),
+    }
+  }
+
+  fn empty_char() -> ScreenChar {
+    ScreenChar {
+      ascii_character: b' ',
+      color_code: ColorCode::new(Color::Green, Color::Brown),
     }
   }
 
