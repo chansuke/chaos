@@ -15,12 +15,8 @@ services:
   - docker
 
 before_script:
-  - docker-compose build
-  - docker-compose run chaos bash -c "cd /tmp; rustup component add rust-src"
-  - docker-compose run chaos bash -c "cd /tmp; bootimage build"
+  - docker-compose run deko_os bash -c "cd /tmp; bootimage build"
 
 script:
-  - docker-compose run chaos bash -c "cd /tmp; bootimage build"
-  - docker-compose run chaos bash -c "cd /tmp; cargo test"
-  - docker-compose run chaos bash -c "cd /tmp; bootimage test"
-
+  - docker-compose run deko_os bash -c "cd /tmp; cargo test"
+  - docker-compose run deko_os bash -c "cd /tmp; bootimage test"
