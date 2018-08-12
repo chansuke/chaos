@@ -3,7 +3,7 @@ sudo: required
 language: rust
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.16.1
+  - DOCKER_COMPOSE_VERSION=1.22.0
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -20,4 +20,3 @@ before_script:
 script:
   - docker-compose run deko_os bash -c "cd /tmp; cargo test"
   - docker-compose run deko_os bash -c "cd /tmp; bootimage test"
-
