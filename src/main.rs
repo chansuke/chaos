@@ -35,6 +35,11 @@ use core::panic::PanicInfo;
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
+    init_idt();
+
+    x86_64::instructions::int3();
+
+    println!("It did not crash!");
     loop {}
 }
 
