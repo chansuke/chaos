@@ -5,19 +5,28 @@
 
 #[macro_use]
 extern crate chaos;
-
 extern crate x86_64;
-use x86_64::structures::idt::{ExceptionStackFrame, InterruptDescriptorTable};
-
 #[macro_use]
 extern crate lazy_static;
+
+use x86_64::structures::idt::{ExceptionStackFrame, InterruptDescriptorTable};
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
         let mut idt = InterruptDescriptorTable::new();
         idt.breakpoint.set_handler_fn(breakpoint_handler);
+        unsafe {
+            idt.double_fault
+                .set_handler_fn(double_fault_handler)
+                .set_stack_index(blog_os::gdt::DOUBLE_FAULT_IST_INDEX);
+        }
+
         idt
     };
+}
+
+pub fn init_idt() {
+    IDT.load();
 }
 
 extern "x86-interrupt" fn double_fault_handler(
@@ -26,10 +35,6 @@ extern "x86-interrupt" fn double_fault_handler(
 ) {
     println!("EXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
     loop {}
-}
-
-pub fn init_idt() {
-    IDT.load();
 }
 
 extern "x86-interrupt" fn breakpoint_handler(stack_frame: &mut ExceptionStackFrame) {
@@ -43,6 +48,7 @@ use core::panic::PanicInfo;
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
+    chaos::gdt::init();
     init_idt();
 
     x86_64::instructions::int3();

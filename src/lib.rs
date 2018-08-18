@@ -13,6 +13,7 @@ extern crate array_init;
 #[cfg(test)]
 extern crate std;
 
+pub mod gdt;
 pub mod serial;
 pub mod vga_buffer;
 
@@ -21,20 +22,4 @@ pub unsafe fn exit_qemu() {
 
   let mut port = Port::<u32>::new(0xf4);
   port.write(0);
-}
-
-#[cfg(not(test))]
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-  println!("Hello World{}", "!");
-
-  init_idt();
-
-  // trigger a page fault
-  unsafe {
-    *(0xdeadbeef as *mut u64) = 42;
-  };
-
-  println!("It did not crash!");
-  loop {}
 }
