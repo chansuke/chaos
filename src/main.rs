@@ -2,6 +2,7 @@
 #![no_std]
 #![cfg_attr(not(test), no_main)]
 #![cfg_attr(test, allow(dead_code, unused_macros, unused_imports))]
+#![feature(abi_x86_interrupt)]
 
 #[macro_use]
 extern crate chaos;
@@ -18,7 +19,7 @@ lazy_static! {
         unsafe {
             idt.double_fault
                 .set_handler_fn(double_fault_handler)
-                .set_stack_index(blog_os::gdt::DOUBLE_FAULT_IST_INDEX);
+                .set_stack_index(chaos::gdt::DOUBLE_FAULT_IST_INDEX);
         }
 
         idt
